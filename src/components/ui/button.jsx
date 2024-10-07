@@ -8,9 +8,9 @@ export function Button({ text }) {
       <HoverBorderGradient
         containerClassName="rounded-full"
         as="button"
-        className="  bg-indigo-600 bg-opacity-25 text-white  flex items-center space-x-2"
+        className="  bg-indigo-600 bg-opacity-25 text-white  flex items-center space-x-2 "
       >
-        <span className="text-base">{text}</span>
+        <span className="text-xl">{text}</span>
       </HoverBorderGradient>
     </div>
   );

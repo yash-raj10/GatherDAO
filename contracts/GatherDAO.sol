@@ -10,7 +10,8 @@ contract GatherDAO {
         uint256 deadline;
         uint256 no_of_seats;
         string location;
-        address[] attendees;        
+        address[] attendees;   
+        string typee;     
     }
 
     mapping(uint256 => Event) public events;
@@ -18,7 +19,7 @@ contract GatherDAO {
     uint256 public numberOfEvents = 0;
 
     function createEvent(address _organizer, string memory _title, string memory _description, uint256 _price,
-    uint256 _deadline, uint256 _no_of_seats, string memory _location ) public returns (uint256) {
+    uint256 _deadline, uint256 _no_of_seats, string memory _location, string memory _typee ) public returns (uint256) {
         
         Event storage eventt = events[numberOfEvents];
 
@@ -31,6 +32,7 @@ contract GatherDAO {
         eventt.deadline = _deadline;
         eventt.no_of_seats = _no_of_seats;
         eventt.location = _location;
+        eventt.typee = _typee;
         
         numberOfEvents++;
         
