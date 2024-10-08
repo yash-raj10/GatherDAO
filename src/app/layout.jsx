@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/ui/Navbar";
+import { GatherDAOProvider } from "../../Context/GatherDAO";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,13 +13,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className + " bg-black bg-dot-white/[0.2]"}>
-        <div className="absolute pointer-events-none inset-0 flex items-center justify-center  bg-black [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
-        <div className="w-full p-8 flex justify-center items-center fixed top-3 z-20">
-          <Navbar />
-        </div>
-        <div className="pt-10">{children}</div>
-      </body>
+      <GatherDAOProvider>
+        <body className={inter.className + " bg-black bg-dot-white/[0.2]"}>
+          <div className="absolute pointer-events-none inset-0 flex items-center justify-center  bg-black [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+          <div className="w-full p-8 flex justify-center items-center fixed top-3 z-20">
+            <Navbar />
+          </div>
+          <div className="pt-10">{children}</div>
+        </body>
+      </GatherDAOProvider>
     </html>
   );
 }

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, Children } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 
@@ -10,7 +11,7 @@ const fetchContract = (signerOrProvider) =>
 
 export const GatherDAOContext = React.createContext();
 
-export const GatherDAOProvider = ({ Children }) => {
+export const GatherDAOProvider = ({ children }) => {
   const titleData = "GatherDAO contract";
   const [currentAccount, setCurrentAccount] = useState("");
 
@@ -51,5 +52,124 @@ export const GatherDAOProvider = ({ Children }) => {
     }
   };
 
-  const getEvents = async () => {};
+  const getEvents = async () => {
+    const provider = new ethers.providers.JsonRpcProvider();
+    const contract = fetchContract(provider);
+
+    const events = await contract.getEvents();
+
+    const parsedEvents = events.map((eventt, i) => ({
+      organizer: eventt.organizer,
+      title: eventt.title,
+      description: eventt.description,
+      price: ethers.utils.formatEther(eventt.price.toString()),
+      deadline: eventt.deadline.toNumber(),
+      no_of_seats: eventt.no_of_seats.toNumber(),
+      location: eventt.location,
+      typee: eventt.typee,
+      pId: i,
+    }));
+
+    return parsedEvents;
+  };
+
+  const getUserEvents = async () => {
+    const provider = new ethers.providers.JsonRpcProvider();
+    const contract = fetchContract(provider);
+
+    const allEvents = await contract.getEvents();
+
+    const accounts = await window.ethereum.request({
+      method: "eth_account",
+    });
+    const currentUser = accounts[0];
+
+    const filterEvents = allEvents.filter(
+      (eventt) =>
+        eventt.organizer === "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    );
+
+    const userData = filterEvents.map((eventt, i) => ({
+      organizer: eventt.organizer,
+      title: eventt.title,
+      description: eventt.description,
+      price: ethers.utils.formatEther(eventt.price.toString()),
+      deadline: eventt.deadline.toNumber(),
+      no_of_seats: eventt.no_of_seats.toNumber(),
+      location: eventt.location,
+      typee: eventt.typee,
+      pId: i,
+    }));
+
+    return userData;
+  };
+
+  const buyTicket = async (pId, price) => {
+    const web3modal = Web3Modal();
+    const connection = await web3modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+    const contract = fetchContract(signer);
+
+    const eventData = await contract.buyTickets(pId, {
+      value: ethers.utils.parseEther(price),
+    });
+
+    await eventData.wait();
+    location.reload();
+
+    return eventData;
+  };
+
+  // check connection
+  const checkIfWalletConnected = async () => {
+    try {
+      if (!window.ethereum) return setOpenError(true), setError("Install MM");
+
+      const accounts = await window.ethereum.request({
+        method: "eth_accounts",
+      });
+      if (accounts.length) {
+        setCurrentAccount(accounts[0]);
+      } else {
+        console.log("no account found");
+      }
+    } catch (error) {
+      console.log("something wrong while connecting to wallet");
+    }
+  };
+
+  useEffect(() => {
+    checkIfWalletConnected();
+  }, []);
+
+  // connect wallet
+  const connectWallet = async () => {
+    try {
+      if (!window.ethereum) return console.log("install MM");
+
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      setCurrentAccount(accounts[0]);
+    } catch (error) {
+      console.log("error while connecting to wallet");
+    }
+  };
+
+  return (
+    <GatherDAOContext.Provider
+      value={{
+        titleData,
+        currentAccount,
+        createEvent,
+        getEvents,
+        getUserEvents,
+        buyTicket,
+        connectWallet,
+      }}
+    >
+      {children}
+    </GatherDAOContext.Provider>
+  );
 };
