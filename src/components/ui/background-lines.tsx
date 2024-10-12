@@ -3,6 +3,8 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import React from "react";
 import { Button } from "./button";
+import { HoverBorderGradient } from "./hover-border-gradient";
+import Link from "next/link";
 
 export const BackgroundLines = ({ children, className, svgOptions }) => {
   return (
@@ -27,7 +29,21 @@ export const BackgroundLines = ({ children, className, svgOptions }) => {
 
             <div className="flex gap-3 justify-center pt-4">
               <Button text="Join Meetup" />
-              <Button text="Organize one" />
+              {/* <Button text="Organize one" /> */}
+
+              <div className=" flex justify-center text-center ">
+                <HoverBorderGradient
+                  containerClassName="rounded-full"
+                  as="button"
+                  className="  bg-indigo-600 bg-opacity-25 text-white  flex items-center space-x-2 "
+                  children={undefined}
+                >
+                  <span className="text-xl">
+                    {" "}
+                    <Link href={`./create`}>Organize one </Link>
+                  </span>
+                </HoverBorderGradient>
+              </div>
             </div>
           </div>
         </h2>
