@@ -5,15 +5,7 @@ import { GatherDAOContext } from "../../../Context/GatherDAO";
 import { useContext } from "react";
 
 const page = () => {
-  const {
-    titleData,
-    currentAccount,
-    createEvent,
-    getEvents,
-    getUserEvents,
-    buyTicket,
-    connectWallet,
-  } = useContext(GatherDAOContext);
+  const { titleData, createEvent } = useContext(GatherDAOContext);
 
   return (
     <div className="mt-40 md:mt-0">

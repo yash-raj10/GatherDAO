@@ -17,6 +17,7 @@ const Hero = ({ titleData, createEvent }) => {
   const createNewEvent = async (e) => {
     e.preventDefault();
     try {
+      console.log(event);
       const data = await createEvent(event);
     } catch (error) {
       console.log(error);
@@ -32,7 +33,7 @@ const Hero = ({ titleData, createEvent }) => {
       <div className="  flex flex-col md:flex-row items-center justify-center gap-10 w-full">
         <div className=" w-1/2 text-white">
           <h1 className="text-4xl md:text-4xl lg:text-4xl font-semibold max-w-7xl mx-auto text-center mt-6 relative z-20 py-6 bg-clip-text text-transparent bg-gradient-to-b  text-white">
-            Meet, Connect & Volenteer on the
+            Meet, Connect & Volunteer on the
             <Cover>Fastest Blockchain</Cover> with GatherDAO
           </h1>
         </div>
@@ -93,7 +94,7 @@ const Hero = ({ titleData, createEvent }) => {
                 htmlFor="price"
                 className={`absolute text-base duration-150 transform -translate-y-4 top-5 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 text-black`}
               >
-                Price
+                Price (in ETH, Please put 0.00001 Eth for free events )
               </label>
             </div>
 
@@ -157,6 +158,21 @@ const Hero = ({ titleData, createEvent }) => {
               </label>
             </div>
 
+            {/* <div className="w-full  relative mt-2 flex justify-center items-center ">
+              <label className="text-black font-semibold" for="typee">
+                Type of Event :
+              </label>
+              <select
+                id="typee"
+                name="typee"
+                className=" text-black mx-1 rounded-lg p-1 "
+                onChange={(e) => setEvent({ ...event, typee: e.target.value })}
+              >
+                <option value="community">Community event</option>
+                <option value="volunteering">Volunteering</option>
+              </select>
+            </div> */}
+
             <div className="w-full  relative mt-2 ">
               <input
                 onChange={(e) => setEvent({ ...event, typee: e.target.value })}
@@ -168,10 +184,10 @@ const Hero = ({ titleData, createEvent }) => {
                 className={`[&:required:invalid:not(:focus)]:border-red-500 rounded-xl peer  w-full p-5  bg-white/10 border-2  outline-none transition  disabled:opacity-70 disabled:cursor-not-allowed pl-4 border-black focus text-green-900 font-semibold`}
               />
               <label
-                htmlFor="location"
+                htmlFor="typee"
                 className={`absolute text-base duration-150 transform -translate-y-4 top-5 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 text-black`}
               >
-                Type
+                typee
               </label>
             </div>
 
